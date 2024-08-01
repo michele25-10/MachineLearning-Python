@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 giocatori = read_csv("giocatori.csv")
 
 #esegue il drop di tutte le colonne interne all'argormento columns
-x = giocatori.drop(columns=["videogame"])
+X = giocatori.drop(columns=["videogame"])
 y = giocatori["videogame"]
 
 #Addestro il mio modello di machine learning 
@@ -15,9 +15,9 @@ y = giocatori["videogame"]
 model = DecisionTreeClassifier()
 
 #Addestramento 
-#   x->colonne di input (soli valori senza intestazioni) 
+#   X->colonne di input (soli valori senza intestazioni) 
 #   y->colonne di output(soli valori senza intestazioni)
-model.fit(x.values, y.values)
+model.fit(X.values, y.values)
 
 #Una volta addestrato il nostro modello 
 #con un set di dati per il train, passo alla previsione
