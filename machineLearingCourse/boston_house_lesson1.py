@@ -3,6 +3,9 @@ import numpy as np
 
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import train_test_split
+
+np.random.seed(2)
 
 def clearDataSet(dataset):
     # Dividere i dati in due DataFrame
@@ -45,18 +48,26 @@ dataset.columns = columns
 X=dataset.drop(columns=dataset.columns[-1])
 y = dataset.iloc[:, -1]  #tutte le righe dell'ultima colonna
 
+#il volume di train in genere consiste nel 70%-75% dei dati
+#i restanti dati sono di test per la validazione
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
 #modello di tipo regressore --> output numerico
 #modello di tipo classificatore --> output di categoria o binari
 
 #uso un modello di tipo regressore --> regressione lineare
 model = LinearRegression()
-model.fit(X=X.values, y=y.values)
+model.fit(X = X_train.values, y = y_train.values)
 
-#faccio il predict in base al mio train 
-predict = model.predict(X)
+#faccio il predict sui dati di test per poter poi validare
+#se il mio modello è valido o meno in base all'errore
+p_train = model.predict(X = X_train)
+p_test = model.predict(X_test)
 
 #prendo gli scarti tra predizione e y reali
-mae = mean_absolute_error(y, predict)
+mae_train = mean_absolute_error(y_train, p_train)
+print("MAE train: ", mae_train)
 
-print('Errore assoluto medio: ' + str(mae))
-print('mean y: ', np.mean(y))
+mae_test = mean_absolute_error(y_test, p_test)
+print('MAE test: ', mae_test)
+#print('mean y: ', np.mean(y))
